@@ -36,4 +36,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function conversations()
+    {
+        return $this->belongsTo(Conversation::class)->whereNull('parent_id')->orderBy('last_reply', 'desc');
+    }
+
+    public function isInConversation(Conversation $conversation)
+    {
+        return $this->conversations->contains($conversation);
+    }
+
+    public function avatar($size)
+    {
+        return 'https://www.gravatar.com/avatar/'.md5($this->email).'?s='.$size.'&d=mm';
+    }
 }
