@@ -4,12 +4,12 @@ namespace App\Transformers;
 use App\Conversation;
 use App\Transformers\UserTransformer;
 
-class ConversationTransformer extends League\Fractal\TransformersAbstract
+class ConversationTransformer extends \League\Fractal\TransformerAbstract
 {
+	protected $availableIncludes = ['replies', 'user', 'users', 'parent'];
+
 	public function transform(Conversation $conversation)
 	{
-		protected $availbaleIncludes = ['replies', 'user', 'users', 'parent'];
-
 		return [
 			'id' => $conversation->id,
 			'parent_id' => $conversation->parent ? $conversation->parent_id : null,
