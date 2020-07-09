@@ -24,4 +24,19 @@ class ConversationController extends Controller
     			->transformWith(new ConversationTransformer)
     			->toArray();
     }
+
+    public function show(Conversation $conversation)
+    {
+        $this->authorize('show', $conversation);
+
+        if($conversation->isReply()) {
+            abort(404);
+        }
+
+        return fractal()
+                ->item($conversation)
+                ->parseIncludes(['user', 'users', 'replies', 'replies.user'])
+                ->transformWith(new ConversationTransformer)
+                ->toArray();
+    }
 }
