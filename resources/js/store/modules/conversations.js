@@ -9,13 +9,18 @@ const state = {
 const getters = {
 	allConversations: state => {
 		return state.conversations;
+	},
+	loadingConversations: state => {
+		return state.loadingConversations;
 	}
 }
 
 const actions = {
 	getConversations({dispatch, commit}, page) {
+		commit('setConversationsLoading', true);
 		api.getConversations(page).then(response => {
 			commit('setConversations', response.data.data);
+			commit('setConversationsLoading', false);
 		});
 	}
 }
@@ -23,6 +28,9 @@ const actions = {
 const mutations = {
 	setConversations(state, conversations) {
 		state.conversations = conversations;
+	},
+	setConversationsLoading(state, status) {
+		state.loadingConversations = status;
 	}
 }
 

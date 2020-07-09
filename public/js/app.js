@@ -1895,13 +1895,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     this.getConversations(1);
   },
   computed: Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
-    conversations: 'allConversations'
+    conversations: 'allConversations',
+    loading: 'loadingConversations'
   }),
   methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['getConversations']))
 });
@@ -37253,53 +37257,94 @@ var render = function() {
       _c(
         "div",
         { staticClass: "card-body" },
-        _vm._l(_vm.conversations, function(conversation) {
-          return _c("div", { key: conversation.id, staticClass: "media" }, [
-            _c("div", { staticClass: "media-body" }, [
-              _c("a", { attrs: { href: "" } }, [
-                _vm._v(_vm._s(conversation.body))
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: "text-muted" }, [
-                _vm._v(
-                  "You and " +
-                    _vm._s(conversation.participant_count) +
-                    " others"
-                )
-              ]),
-              _vm._v(" "),
-              _c("ul", { staticClass: "list-inline" }, [
-                _c(
-                  "li",
+        [
+          _vm.loading
+            ? _c("div", { staticClass: "loader" }, [_c("loader")], 1)
+            : _vm.conversations.length
+            ? _vm._l(_vm.conversations, function(conversation) {
+                return _c(
+                  "div",
+                  { key: conversation.id, staticClass: "media" },
                   [
-                    _vm._l(conversation.users.data, function(user) {
-                      return _c("img", {
-                        attrs: {
-                          src: user.avatar,
-                          title: user.name,
-                          alt: user.name + " avatar"
-                        }
-                      })
-                    }),
-                    _vm._v(" "),
-                    _c("span", { staticClass: "text-muted" }, [
-                      _c("small", [
+                    _c("div", { staticClass: "media-body" }, [
+                      _c("a", { attrs: { href: "" } }, [
+                        _vm._v(_vm._s(conversation.body))
+                      ]),
+                      _vm._v(" "),
+                      _c("p", { staticClass: "text-muted" }, [
                         _vm._v(
-                          "Last reply " +
-                            _vm._s(conversation.last_reply_human_date)
+                          "You and " +
+                            _vm._s(conversation.participant_count) +
+                            " others"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("ul", { staticClass: "list-inline" }, [
+                        _c(
+                          "li",
+                          [
+                            _vm._l(conversation.users.data, function(user) {
+                              return _c("img", {
+                                attrs: {
+                                  src: user.avatar,
+                                  title: user.name,
+                                  alt: user.name + " avatar"
+                                }
+                              })
+                            }),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "text-muted" }, [
+                              _c("small", [
+                                _vm._v(
+                                  "Last reply " +
+                                    _vm._s(conversation.last_reply_human_date)
+                                )
+                              ])
+                            ])
+                          ],
+                          2
                         )
                       ])
                     ])
-                  ],
-                  2
+                  ]
                 )
-              ])
-            ])
-          ])
-        }),
-        0
+              })
+            : _c("div", [_vm._v("No Conversations")])
+        ],
+        2
       )
     ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Loader.vue?vue&type=template&id=e79ec684&":
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Loader.vue?vue&type=template&id=e79ec684& ***!
+  \*********************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("center", [
+    _c("img", {
+      staticStyle: { width: "250px" },
+      attrs: {
+        src: "https://miro.medium.com/max/882/1*9EBHIOzhE1XfMYoKz1JcsQ.gif"
+      }
+    })
   ])
 }
 var staticRenderFns = []
@@ -50722,6 +50767,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 
 Vue.component('conversation-dashboard', __webpack_require__(/*! ./components/ConversationDashboard.vue */ "./resources/js/components/ConversationDashboard.vue")["default"]);
 Vue.component('conversations', __webpack_require__(/*! ./components/Conversations.vue */ "./resources/js/components/Conversations.vue")["default"]);
+Vue.component('loader', __webpack_require__(/*! ./components/Loader.vue */ "./resources/js/components/Loader.vue")["default"]);
 var app = new Vue({
   el: '#app',
   store: _store_index__WEBPACK_IMPORTED_MODULE_0__["default"]
@@ -50918,6 +50964,59 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Loader.vue":
+/*!********************************************!*\
+  !*** ./resources/js/components/Loader.vue ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Loader_vue_vue_type_template_id_e79ec684___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Loader.vue?vue&type=template&id=e79ec684& */ "./resources/js/components/Loader.vue?vue&type=template&id=e79ec684&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+var script = {}
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+  script,
+  _Loader_vue_vue_type_template_id_e79ec684___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Loader_vue_vue_type_template_id_e79ec684___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Loader.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Loader.vue?vue&type=template&id=e79ec684&":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/Loader.vue?vue&type=template&id=e79ec684& ***!
+  \***************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Loader_vue_vue_type_template_id_e79ec684___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Loader.vue?vue&type=template&id=e79ec684& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Loader.vue?vue&type=template&id=e79ec684&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Loader_vue_vue_type_template_id_e79ec684___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Loader_vue_vue_type_template_id_e79ec684___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/store/api/all.js":
 /*!***************************************!*\
   !*** ./resources/js/store/api/all.js ***!
@@ -51014,20 +51113,28 @@ var state = {
 var getters = {
   allConversations: function allConversations(state) {
     return state.conversations;
+  },
+  loadingConversations: function loadingConversations(state) {
+    return state.loadingConversations;
   }
 };
 var actions = {
   getConversations: function getConversations(_ref, page) {
     var dispatch = _ref.dispatch,
         commit = _ref.commit;
+    commit('setConversationsLoading', true);
     _api_all__WEBPACK_IMPORTED_MODULE_0__["default"].getConversations(page).then(function (response) {
       commit('setConversations', response.data.data);
+      commit('setConversationsLoading', false);
     });
   }
 };
 var mutations = {
   setConversations: function setConversations(state, conversations) {
     state.conversations = conversations;
+  },
+  setConversationsLoading: function setConversationsLoading(state, status) {
+    state.loadingConversations = status;
   }
 };
 var modules = {

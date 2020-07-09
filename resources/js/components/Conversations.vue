@@ -2,9 +2,11 @@
     <div class="container">
         <div class="card">
             <div class="card-header">All Conversations</div>
-
             <div class="card-body">
-                <div class="media" v-for="conversation in conversations" :key="conversation.id">
+                <div v-if="loading" class="loader">
+                    <loader></loader>
+                </div>
+                <div class="media" v-for="conversation in conversations" :key="conversation.id" v-else-if="conversations.length">
                     <div class="media-body">
                         <a href="">{{ conversation.body }}</a>
                         <p class="text-muted">You and {{ conversation.participant_count }} others</p>
@@ -15,6 +17,7 @@
                         </ul>
                     </div>
                 </div>
+                <div v-else>No Conversations</div>
             </div>
         </div>
     </div>
@@ -27,7 +30,8 @@
             this.getConversations(1);
         },
         computed: mapGetters({
-            conversations: 'allConversations'
+            conversations: 'allConversations',
+            loading: 'loadingConversations'
         }),
         methods: {
             ...mapActions([
