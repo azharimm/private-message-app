@@ -7,17 +7,23 @@ const state = {
 }
 
 const getters = {
-	//
+	allConversations: state => {
+		return state.conversations;
+	}
 }
 
 const actions = {
 	getConversations({dispatch, commit}, page) {
-		//
+		api.getConversations(page).then(response => {
+			commit('setConversations', response.data.data);
+		});
 	}
 }
 
 const mutations = {
-	//
+	setConversations(state, conversations) {
+		state.conversations = conversations;
+	}
 }
 
 const modules = {
