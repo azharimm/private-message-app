@@ -20,6 +20,8 @@ const actions = {
 		api.getConversation(id).then(response => {
 			commit('setConversation', response.data.data)
 			commit('setConversationLoading', false);
+
+			window.history.pushState(null, null, '/conversations/'+id);
 		});
 	}
 }
