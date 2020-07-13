@@ -1877,10 +1877,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   computed: Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
-    conversation: 'currentConversation'
+    conversation: 'currentConversation',
+    loading: 'loadingConversation'
   })
 });
 
@@ -38064,31 +38070,71 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.conversation
-    ? _c(
-        "div",
-        [
-          _vm.conversation.users.data.length
-            ? _c(
-                "ul",
-                { staticClass: "list-inline" },
-                [
-                  _vm._m(0),
+  return _c("div", [
+    _vm.loading
+      ? _c("div", { staticClass: "loader" }, [_c("loader")], 1)
+      : _vm.conversation
+      ? _c(
+          "div",
+          [
+            _vm.conversation.users.data.length
+              ? _c(
+                  "ul",
+                  { staticClass: "list-inline" },
+                  [
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _vm._l(_vm.conversation.users.data, function(user) {
+                      return _c("li", { staticClass: "list-inline-item" }, [
+                        _vm._v(_vm._s(user.name))
+                      ])
+                    })
+                  ],
+                  2
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("hr"),
+            _vm._v(" "),
+            _vm._l(_vm.conversation.replies.data, function(reply) {
+              return _c("div", { staticClass: "media" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "media-left",
+                    staticStyle: { "margin-right": "10px" }
+                  },
+                  [
+                    _c("img", {
+                      attrs: {
+                        src: reply.user.data.avatar,
+                        alt: reply.user.data.name
+                      }
+                    })
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "media-body" }, [
+                  _c("p", [
+                    _vm._v(
+                      _vm._s(reply.user.data.name) +
+                        " • " +
+                        _vm._s(reply.created_at_human)
+                    )
+                  ]),
                   _vm._v(" "),
-                  _vm._l(_vm.conversation.users.data, function(user) {
-                    return _c("li", { staticClass: "list-inline-item" }, [
-                      _vm._v(_vm._s(user.name))
+                  _c("div", { staticClass: "card" }, [
+                    _c("div", { staticClass: "card-body" }, [
+                      _vm._v(
+                        "\n\t\t\t\t\t\t" + _vm._s(reply.body) + "\n\t\t\t\t\t"
+                      )
                     ])
-                  })
-                ],
-                2
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _c("hr"),
-          _vm._v(" "),
-          _vm._l(_vm.conversation.replies.data, function(reply) {
-            return _c("div", { staticClass: "media" }, [
+                  ])
+                ])
+              ])
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "media" }, [
               _c(
                 "div",
                 {
@@ -38098,8 +38144,8 @@ var render = function() {
                 [
                   _c("img", {
                     attrs: {
-                      src: reply.user.data.avatar,
-                      alt: reply.user.data.name
+                      src: _vm.conversation.user.data.avatar,
+                      alt: _vm.conversation.user.data.name
                     }
                   })
                 ]
@@ -38108,62 +38154,28 @@ var render = function() {
               _c("div", { staticClass: "media-body" }, [
                 _c("p", [
                   _vm._v(
-                    _vm._s(reply.user.data.name) +
+                    _vm._s(_vm.conversation.user.data.name) +
                       " • " +
-                      _vm._s(reply.created_at_human)
+                      _vm._s(_vm.conversation.created_at_human)
                   )
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "card" }, [
                   _c("div", { staticClass: "card-body" }, [
-                    _vm._v("\n\t\t\t\t\t" + _vm._s(reply.body) + "\n\t\t\t\t")
+                    _vm._v(
+                      "\n\t\t\t\t\t\t" +
+                        _vm._s(_vm.conversation.body) +
+                        "\n\t\t\t\t\t"
+                    )
                   ])
                 ])
               ])
             ])
-          }),
-          _vm._v(" "),
-          _c("div", { staticClass: "media" }, [
-            _c(
-              "div",
-              {
-                staticClass: "media-left",
-                staticStyle: { "margin-right": "10px" }
-              },
-              [
-                _c("img", {
-                  attrs: {
-                    src: _vm.conversation.user.data.avatar,
-                    alt: _vm.conversation.user.data.name
-                  }
-                })
-              ]
-            ),
-            _vm._v(" "),
-            _c("div", { staticClass: "media-body" }, [
-              _c("p", [
-                _vm._v(
-                  _vm._s(_vm.conversation.user.data.name) +
-                    " • " +
-                    _vm._s(_vm.conversation.created_at_human)
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "card" }, [
-                _c("div", { staticClass: "card-body" }, [
-                  _vm._v(
-                    "\n\t\t\t\t\t" +
-                      _vm._s(_vm.conversation.body) +
-                      "\n\t\t\t\t"
-                  )
-                ])
-              ])
-            ])
-          ])
-        ],
-        2
-      )
-    : _vm._e()
+          ],
+          2
+        )
+      : _c("div", [_vm._v("Select a conversation")])
+  ])
 }
 var staticRenderFns = [
   function() {
@@ -52163,20 +52175,28 @@ var state = {
 var getters = {
   currentConversation: function currentConversation(state) {
     return state.conversation;
+  },
+  loadingConversation: function loadingConversation(state) {
+    return state.loadingConversation;
   }
 };
 var actions = {
   getConversation: function getConversation(_ref, id) {
     var dispatch = _ref.dispatch,
         commit = _ref.commit;
+    commit('setConversationLoading', true);
     _api_all__WEBPACK_IMPORTED_MODULE_0__["default"].getConversation(id).then(function (response) {
       commit('setConversation', response.data.data);
+      commit('setConversationLoading', false);
     });
   }
 };
 var mutations = {
   setConversation: function setConversation(state, conversation) {
     state.conversation = conversation;
+  },
+  setConversationLoading: function setConversationLoading(state, status) {
+    state.loadingConversation = status;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
