@@ -20,6 +20,11 @@ class ConversationPolicy
         //
     }
 
+    public function reply(User $user, Conversation $conversation)
+    {
+        return $this->affect($user, $conversation);
+    }
+
     public function show(User $user, Conversation $conversation)
     {
         return $this->affect($user, $conversation);
