@@ -52435,6 +52435,9 @@ var actions = {
         body = _ref3.body;
     return _api_all__WEBPACK_IMPORTED_MODULE_0__["default"].storeConversationReply(id, {
       body: body
+    }).then(function (response) {
+      commit('appendToConversation', response.data.data);
+      commit('prependToConversations', response.data.data.parent.data);
     });
   }
 };
@@ -52444,6 +52447,9 @@ var mutations = {
   },
   setConversationLoading: function setConversationLoading(state, status) {
     state.loadingConversation = status;
+  },
+  appendToConversation: function appendToConversation(state, reply) {
+    state.conversation.replies.data.unshift(reply);
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -52497,6 +52503,12 @@ var mutations = {
   },
   setConversationsLoading: function setConversationsLoading(state, status) {
     state.loadingConversations = status;
+  },
+  prependToConversations: function prependToConversations(state, conversation) {
+    state.conversations = state.conversations.filter(function (c) {
+      return c.id !== conversation.id;
+    });
+    state.conversations.unshift(conversation);
   }
 };
 var modules = {

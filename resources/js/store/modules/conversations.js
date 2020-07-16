@@ -31,6 +31,11 @@ const mutations = {
 	},
 	setConversationsLoading(state, status) {
 		state.loadingConversations = status;
+	},
+	prependToConversations(state, conversation) {
+		state.conversations = state.conversations.filter((c) => c.id !== conversation.id)
+
+		state.conversations.unshift(conversation);
 	}
 }
 
