@@ -6,10 +6,11 @@
 		<div v-else-if="conversation">
 			<ul class="list-inline" v-if="conversation.users.data.length">
 				<li class="list-inline-item"><strong>In Conversation</strong></li>
-				<li class="list-inline-item" v-for="user in conversation.users.data">{{user.name}}</li>
+				<li class="list-inline-item" v-for="(user, index) in conversation.users.data" :key="index">{{user.name}}</li>
 			</ul>
 			<hr>
-			<div class="media" v-for="reply in conversation.replies.data">
+			<conversation-reply-form></conversation-reply-form>
+			<div class="media" v-for="(reply, index) in conversation.replies.data" :key="index">
 				<div class="media-left" style="margin-right: 10px;">
 					<img :src="reply.user.data.avatar" :alt="reply.user.data.name">
 				</div>
