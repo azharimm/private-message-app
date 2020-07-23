@@ -56985,7 +56985,8 @@ var actions = {
       body: body,
       recipientIds: recipientIds
     }).then(function (response) {
-      console.log(response);
+      dispatch('getConversation', response.data.data.id);
+      commit('prependToConversations', response.data.data);
     });
   }
 };

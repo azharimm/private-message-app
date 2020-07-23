@@ -34,7 +34,8 @@ const actions = {
 		return api.storeConversation({
 			body, recipientIds
 		}).then((response) => {
-			console.log(response)
+			dispatch('getConversation', response.data.data.id)
+			commit('prependToConversations', response.data.data);
 		})
 	}
 }
