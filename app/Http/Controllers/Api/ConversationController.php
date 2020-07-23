@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Transformers\ConversationTransformer;
+use App\Http\Requests\StoreConversationRequest;
 use Illuminate\Http\Request;
 use App\Conversation;
 
@@ -32,6 +33,27 @@ class ConversationController extends Controller
         if($conversation->isReply()) {
             abort(404);
         }
+
+        return fractal()
+                ->item($conversation)
+                ->parseIncludes(['user', 'users', 'replies', 'replies.user'])
+                ->transformWith(new ConversationTransformer)
+                ->toArray();
+    }
+
+    public function store(StoreConversationRequest $request)
+    {
+
+        $conversation = new Conversation;
+        $conversation->body = $request->body;
+        $conversation->users()->associate($request->users());
+        $conversation->save();
+
+        $conversation->touchLastReply();
+
+        $conversation->users()->sync(array_unique(
+            array_merge($request->recipients, [$request->users()->id]))
+        );
 
         return fractal()
                 ->item($conversation)
