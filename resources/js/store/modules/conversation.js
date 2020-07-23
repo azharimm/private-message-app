@@ -29,6 +29,13 @@ const actions = {
 			commit('appendToConversation', response.data.data);
 			commit('prependToConversations', response.data.data.parent.data);
 		})
+	},
+	createConversation({dispatch, commit}, {body, recipientIds}) {
+		return api.storeConversation({
+			body, recipientIds
+		}).then((response) => {
+			console.log(response)
+		})
 	}
 }
 

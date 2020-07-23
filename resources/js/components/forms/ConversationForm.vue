@@ -5,28 +5,31 @@
                 New Message
             </div>
             <div class="card-body">
-                <div class="form-group">
-                    <input type="text" id="users" placeholder="Start typing to find users" class="form-control">
-                </div>
-                <ul v-if="recipients.length" class="list-inline">
-                    <li><strong>To:</strong></li>
-                    <li class="list-inline-item" v-for="(recipient, index) in recipients" :key="index">
-                        {{recipient.name}} [<a href="#" @click.prevent="removeRecipient(recipient)">x</a>]
-                    </li>
-                </ul>
-                <div class="form-group">
-                    <label for="message">Message</label>
-                    <textarea id="message" cols="30" rows="4" class="form-control" v-model="body"></textarea>
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-secondary">Send</button>
-                </div>
+                <form @submit.prevent="send">
+                    <div class="form-group">
+                        <input type="text" id="users" placeholder="Start typing to find users" class="form-control">
+                    </div>
+                    <ul v-if="recipients.length" class="list-inline">
+                        <li><strong>To:</strong></li>
+                        <li class="list-inline-item" v-for="(recipient, index) in recipients" :key="index">
+                            {{recipient.name}} [<a href="#" @click.prevent="removeRecipient(recipient)">x</a>]
+                        </li>
+                    </ul>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" cols="30" rows="4" class="form-control" v-model="body"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-secondary">Send</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import {mapActions, mapGetters} from 'vuex'
 import { userautocomplete } from '../../helpers/autocomplete'
 export default {
     data() {
@@ -42,6 +45,9 @@ export default {
         })
     },
     methods: {
+        ...mapActions([
+            'createConversation'
+        ]),
         addRecipient(recipient) {
             var existing = this.recipients.find(r => {
                 return r.id === recipient.id
@@ -56,6 +62,15 @@ export default {
         removeRecipient(recipient) {
             this.recipients = this.recipients.filter(r => {
                 return r.id !== recipient.id
+            })
+        },
+        send() {
+            this.createConversation({
+                recipientIds: this.recipients.map(r => r.id),
+                body: this.body
+            }).then(() => {
+                this.recipients = []
+                this.body = null
             })
         }
     }

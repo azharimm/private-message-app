@@ -5859,7 +5859,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _helpers_autocomplete__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../helpers/autocomplete */ "./resources/js/helpers/autocomplete.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _helpers_autocomplete__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../helpers/autocomplete */ "./resources/js/helpers/autocomplete.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -5888,6 +5895,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -5899,13 +5909,13 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
-    var users = Object(_helpers_autocomplete__WEBPACK_IMPORTED_MODULE_0__["userautocomplete"])("#users").on('autocomplete:selected', function (e, selection) {
+    var users = Object(_helpers_autocomplete__WEBPACK_IMPORTED_MODULE_1__["userautocomplete"])("#users").on('autocomplete:selected', function (e, selection) {
       _this.addRecipient(selection);
 
       users.autocomplete.setVal('');
     });
   },
-  methods: {
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])(['createConversation']), {
     addRecipient: function addRecipient(recipient) {
       var existing = this.recipients.find(function (r) {
         return r.id === recipient.id;
@@ -5921,8 +5931,21 @@ __webpack_require__.r(__webpack_exports__);
       this.recipients = this.recipients.filter(function (r) {
         return r.id !== recipient.id;
       });
+    },
+    send: function send() {
+      var _this2 = this;
+
+      this.createConversation({
+        recipientIds: this.recipients.map(function (r) {
+          return r.id;
+        }),
+        body: this.body
+      }).then(function () {
+        _this2.recipients = [];
+        _this2.body = null;
+      });
     }
-  }
+  })
 });
 
 /***/ }),
@@ -42698,72 +42721,87 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "card-body" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _vm.recipients.length
-          ? _c(
-              "ul",
-              { staticClass: "list-inline" },
-              [
-                _vm._m(1),
-                _vm._v(" "),
-                _vm._l(_vm.recipients, function(recipient, index) {
-                  return _c(
-                    "li",
-                    { key: index, staticClass: "list-inline-item" },
-                    [
-                      _vm._v(
-                        "\n                    " + _vm._s(recipient.name) + " ["
-                      ),
-                      _c(
-                        "a",
-                        {
-                          attrs: { href: "#" },
-                          on: {
-                            click: function($event) {
-                              $event.preventDefault()
-                              return _vm.removeRecipient(recipient)
-                            }
-                          }
-                        },
-                        [_vm._v("x")]
-                      ),
-                      _vm._v("]\n                ")
-                    ]
-                  )
-                })
-              ],
-              2
-            )
-          : _vm._e(),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "message" } }, [_vm._v("Message")]),
-          _vm._v(" "),
-          _c("textarea", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.body,
-                expression: "body"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: { id: "message", cols: "30", rows: "4" },
-            domProps: { value: _vm.body },
+        _c(
+          "form",
+          {
             on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.body = $event.target.value
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.send($event)
               }
             }
-          })
-        ]),
-        _vm._v(" "),
-        _vm._m(2)
+          },
+          [
+            _vm._m(0),
+            _vm._v(" "),
+            _vm.recipients.length
+              ? _c(
+                  "ul",
+                  { staticClass: "list-inline" },
+                  [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _vm._l(_vm.recipients, function(recipient, index) {
+                      return _c(
+                        "li",
+                        { key: index, staticClass: "list-inline-item" },
+                        [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(recipient.name) +
+                              " ["
+                          ),
+                          _c(
+                            "a",
+                            {
+                              attrs: { href: "#" },
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  return _vm.removeRecipient(recipient)
+                                }
+                              }
+                            },
+                            [_vm._v("x")]
+                          ),
+                          _vm._v("]\n                    ")
+                        ]
+                      )
+                    })
+                  ],
+                  2
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "message" } }, [_vm._v("Message")]),
+              _vm._v(" "),
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.body,
+                    expression: "body"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { id: "message", cols: "30", rows: "4" },
+                domProps: { value: _vm.body },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.body = $event.target.value
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _vm._m(2)
+          ]
+        )
       ])
     ])
   ])
@@ -56850,6 +56888,18 @@ __webpack_require__.r(__webpack_exports__);
         resolve(response);
       });
     });
+  },
+  storeConversation: function storeConversation(_ref2) {
+    var body = _ref2.body,
+        recipientIds = _ref2.recipientIds;
+    return new Promise(function (resolve, reject) {
+      axios.post('/webapi/conversations/', {
+        body: body,
+        recipients: recipientIds
+      }).then(function (response) {
+        resolve(response);
+      });
+    });
   }
 });
 
@@ -56924,6 +56974,18 @@ var actions = {
     }).then(function (response) {
       commit('appendToConversation', response.data.data);
       commit('prependToConversations', response.data.data.parent.data);
+    });
+  },
+  createConversation: function createConversation(_ref4, _ref5) {
+    var dispatch = _ref4.dispatch,
+        commit = _ref4.commit;
+    var body = _ref5.body,
+        recipientIds = _ref5.recipientIds;
+    return _api_all__WEBPACK_IMPORTED_MODULE_0__["default"].storeConversation({
+      body: body,
+      recipientIds: recipientIds
+    }).then(function (response) {
+      console.log(response);
     });
   }
 };

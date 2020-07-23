@@ -19,5 +19,15 @@ export default {
 				resolve(response)
 			})
 		})
+	},
+	storeConversation({body, recipientIds}) {
+		return new Promise((resolve, reject) => {
+			axios.post('/webapi/conversations/', {
+				body,
+				recipients: recipientIds
+			}).then(response => {
+				resolve(response)
+			})
+		})
 	}
 }

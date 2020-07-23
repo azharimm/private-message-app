@@ -46,13 +46,13 @@ class ConversationController extends Controller
 
         $conversation = new Conversation;
         $conversation->body = $request->body;
-        $conversation->users()->associate($request->users());
+        $conversation->user()->associate($request->user());
         $conversation->save();
 
         $conversation->touchLastReply();
 
         $conversation->users()->sync(array_unique(
-            array_merge($request->recipients, [$request->users()->id]))
+            array_merge($request->recipients, [$request->user()->id]))
         );
 
         return fractal()
