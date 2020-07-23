@@ -5875,10 +5875,53 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      body: null,
+      recipients: []
+    };
+  },
   mounted: function mounted() {
-    Object(_helpers_autocomplete__WEBPACK_IMPORTED_MODULE_0__["userautocomplete"])("#users");
+    var _this = this;
+
+    var users = Object(_helpers_autocomplete__WEBPACK_IMPORTED_MODULE_0__["userautocomplete"])("#users").on('autocomplete:selected', function (e, selection) {
+      _this.addRecipient(selection);
+
+      users.autocomplete.setVal('');
+    });
+  },
+  methods: {
+    addRecipient: function addRecipient(recipient) {
+      var existing = this.recipients.find(function (r) {
+        return r.id === recipient.id;
+      });
+
+      if (typeof existing != 'undefined') {
+        return;
+      }
+
+      this.recipients.push(recipient);
+    },
+    removeRecipient: function removeRecipient(recipient) {
+      this.recipients = this.recipients.filter(function (r) {
+        return r.id !== recipient.id;
+      });
+    }
   }
 });
 
@@ -42648,32 +42691,115 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-header" }, [
+        _vm._v("\n            New Message\n        ")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _vm.recipients.length
+          ? _c(
+              "ul",
+              { staticClass: "list-inline" },
+              [
+                _vm._m(1),
+                _vm._v(" "),
+                _vm._l(_vm.recipients, function(recipient, index) {
+                  return _c(
+                    "li",
+                    { key: index, staticClass: "list-inline-item" },
+                    [
+                      _vm._v(
+                        "\n                    " + _vm._s(recipient.name) + " ["
+                      ),
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              return _vm.removeRecipient(recipient)
+                            }
+                          }
+                        },
+                        [_vm._v("x")]
+                      ),
+                      _vm._v("]\n                ")
+                    ]
+                  )
+                })
+              ],
+              2
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "message" } }, [_vm._v("Message")]),
+          _vm._v(" "),
+          _c("textarea", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.body,
+                expression: "body"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { id: "message", cols: "30", rows: "4" },
+            domProps: { value: _vm.body },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.body = $event.target.value
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _vm._m(2)
+      ])
+    ])
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "card" }, [
-        _c("div", { staticClass: "card-header" }, [
-          _vm._v("\n            New Message\n        ")
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "form-group" }, [
-            _c("input", {
-              staticClass: "form-control",
-              attrs: {
-                type: "text",
-                id: "users",
-                placeholder: "Start typing to find users"
-              }
-            })
-          ])
-        ])
-      ])
+    return _c("div", { staticClass: "form-group" }, [
+      _c("input", {
+        staticClass: "form-control",
+        attrs: {
+          type: "text",
+          id: "users",
+          placeholder: "Start typing to find users"
+        }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", [_c("strong", [_vm._v("To:")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c(
+        "button",
+        { staticClass: "btn btn-secondary", attrs: { type: "submit" } },
+        [_vm._v("Send")]
+      )
     ])
   }
 ]
