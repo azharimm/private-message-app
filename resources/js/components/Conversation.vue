@@ -8,6 +8,7 @@
 				<li class="list-inline-item"><strong>In Conversation</strong></li>
 				<li class="list-inline-item" v-for="(user, index) in conversation.users.data" :key="index">{{user.name}}</li>
 			</ul>
+			<conversation-add-form-user></conversation-add-form-user>
 			<hr>
 			<conversation-reply-form></conversation-reply-form>
 			<div class="media" v-for="(reply, index) in conversation.replies.data" :key="index">
