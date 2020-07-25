@@ -57171,8 +57171,9 @@ var actions = {
         recipientIds = _ref7.recipientIds;
     return _api_all__WEBPACK_IMPORTED_MODULE_0__["default"].storeConversationUsers(id, {
       recipientIds: recipientIds
-    }).then(function (response) {// commit('addUsersToConversation')
-      // commit('updateConversationInList')
+    }).then(function (response) {
+      commit('updateUsersToConversation', response.data.data.users.data);
+      commit('updateConversationInList', response.data.data);
     });
   }
 };
@@ -57185,6 +57186,9 @@ var mutations = {
   },
   appendToConversation: function appendToConversation(state, reply) {
     state.conversation.replies.data.unshift(reply);
+  },
+  updateUsersToConversation: function updateUsersToConversation(state, users) {
+    state.conversation.users.data = users;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -57244,6 +57248,15 @@ var mutations = {
       return c.id !== conversation.id;
     });
     state.conversations.unshift(conversation);
+  },
+  updateConversationInList: function updateConversationInList(state, conversation) {
+    state.conversations = state.conversations.map(function (c) {
+      if (c.id == conversation.id) {
+        return conversation;
+      }
+
+      return c;
+    });
   }
 };
 var modules = {

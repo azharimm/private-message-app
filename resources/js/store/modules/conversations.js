@@ -36,6 +36,15 @@ const mutations = {
 		state.conversations = state.conversations.filter((c) => c.id !== conversation.id)
 
 		state.conversations.unshift(conversation);
+	},
+	updateConversationInList(state, conversation) {
+		state.conversations = state.conversations.map(c => {
+			if(c.id == conversation.id) {
+				return conversation
+			}
+
+			return c
+		})
 	}
 }
 

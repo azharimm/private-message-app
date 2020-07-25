@@ -42,8 +42,8 @@ const actions = {
 		return api.storeConversationUsers(id, {
 			recipientIds
 		}).then(response => {
-			// commit('addUsersToConversation')
-			// commit('updateConversationInList')
+			commit('updateUsersToConversation', response.data.data.users.data)
+			commit('updateConversationInList', response.data.data)
 		})
 	}
 }
@@ -57,6 +57,9 @@ const mutations = {
 	},
 	appendToConversation(state, reply) {
 		state.conversation.replies.data.unshift(reply);
+	},
+	updateUsersToConversation(state, users) {
+		state.conversation.users.data = users
 	}
 }
 
