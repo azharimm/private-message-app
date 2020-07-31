@@ -21,6 +21,11 @@ const actions = {
 		api.getConversations(page).then(response => {
 			commit('setConversations', response.data.data);
 			commit('setConversationsLoading', false);
+
+			Echo.private('user.'+Laravel.user.id)
+				.listen('ConversationCreated', (e) => {
+					commit('prependToConversations', e.data)
+				});
 		});
 	}
 }

@@ -9,7 +9,16 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    
     <!-- Scripts -->
+    <script>
+        window.Laravel = <?php echo json_encode([
+            'csrfToken' => csrf_token(),
+            'user' => [
+                'id' => Auth::check() ? Auth::user()->id : null
+            ]
+        ]); ?>
+    </script>
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->

@@ -42,7 +42,6 @@ class ConversationCreated implements ShouldBroadcast
         });
         //results of code above
         // $channels = [new PrivateChannel('user.2'), new PrivateChannel('user.3')];
-        dd($channels);
         return $channels;
     }
 

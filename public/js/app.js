@@ -63273,6 +63273,9 @@ var actions = {
     _api_all__WEBPACK_IMPORTED_MODULE_0__["default"].getConversations(page).then(function (response) {
       commit('setConversations', response.data.data);
       commit('setConversationsLoading', false);
+      Echo["private"]('user.' + Laravel.user.id).listen('ConversationCreated', function (e) {
+        commit('prependToConversations', e.data);
+      });
     });
   }
 };
