@@ -15,6 +15,7 @@
         "laravel/scout": "^8.1",
         "laravel/tinker": "^1.0",
         "laravel/ui": "^1.1",
+        "pusher/pusher-php-server": "^4.1",
         "spatie/laravel-fractal": "^5.7"
     },
     "require-dev": {
