@@ -63183,6 +63183,8 @@ var actions = {
       commit('setConversationLoading', false);
       Echo["private"]('conversation.' + id).listen('ConverstationReplyCreated', function (e) {
         commit('appendToConversation', e.data);
+      }).listen('ConversationAddedUsers', function (e) {
+        commit('updateUsersToConversation', e.data.users.data);
       });
       window.history.pushState(null, null, '/conversations/' + id);
     });
@@ -63285,6 +63287,8 @@ var actions = {
         commit('prependToConversations', e.data);
       }).listen('ConverstationReplyCreated', function (e) {
         commit('prependToConversations', e.data.parent.data);
+      }).listen('ConversationAddedUsers', function (e) {
+        commit('updateConversationInList', e.data);
       });
     });
   }

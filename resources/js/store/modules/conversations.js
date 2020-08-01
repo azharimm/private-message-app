@@ -29,6 +29,9 @@ const actions = {
 				.listen('ConverstationReplyCreated', e => {
 					commit('prependToConversations', e.data.parent.data)
 				})
+				.listen('ConversationAddedUsers', e => {
+					commit('updateConversationInList', e.data)
+				})
 		});
 	}
 }

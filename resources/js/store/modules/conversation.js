@@ -30,6 +30,9 @@ const actions = {
 				.listen('ConverstationReplyCreated', e => {
 					commit('appendToConversation', e.data)
 				})
+				.listen('ConversationAddedUsers', e => {
+					commit('updateUsersToConversation', e.data.users.data)
+				})
 
 			window.history.pushState(null, null, '/conversations/'+id);
 		});
