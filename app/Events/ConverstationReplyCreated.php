@@ -35,7 +35,9 @@ class ConverstationReplyCreated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        $channels = [];
+        $channels = [
+            new PrivateChannel('conversation.'.$this->conversation->parent->id)
+        ];
 
         $this->conversation->parent->usersExceptCurrentAuthenticated->each(function($user) use (&$channels) {
             $channels[] = new PrivateChannel('user.'.$user->id);

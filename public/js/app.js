@@ -63173,9 +63173,17 @@ var actions = {
     var dispatch = _ref.dispatch,
         commit = _ref.commit;
     commit('setConversationLoading', true);
+
+    if (state.conversation) {
+      Echo.leave('conversation.' + state.conversation.id);
+    }
+
     _api_all__WEBPACK_IMPORTED_MODULE_0__["default"].getConversation(id).then(function (response) {
       commit('setConversation', response.data.data);
       commit('setConversationLoading', false);
+      Echo["private"]('conversation.' + id).listen('ConverstationReplyCreated', function (e) {
+        commit('appendToConversation', e.data);
+      });
       window.history.pushState(null, null, '/conversations/' + id);
     });
   },
@@ -63275,6 +63283,8 @@ var actions = {
       commit('setConversationsLoading', false);
       Echo["private"]('user.' + Laravel.user.id).listen('ConversationCreated', function (e) {
         commit('prependToConversations', e.data);
+      }).listen('ConverstationReplyCreated', function (e) {
+        commit('prependToConversations', e.data.parent.data);
       });
     });
   }

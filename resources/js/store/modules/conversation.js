@@ -17,9 +17,19 @@ const getters = {
 const actions = {
 	getConversation({dispatch, commit}, id) {
 		commit('setConversationLoading', true);
+
+		if(state.conversation) {
+			Echo.leave('conversation.'+state.conversation.id);
+		}
+
 		api.getConversation(id).then(response => {
 			commit('setConversation', response.data.data)
 			commit('setConversationLoading', false);
+
+			Echo.private('conversation.'+id)
+				.listen('ConverstationReplyCreated', e => {
+					commit('appendToConversation', e.data)
+				})
 
 			window.history.pushState(null, null, '/conversations/'+id);
 		});

@@ -25,7 +25,10 @@ const actions = {
 			Echo.private('user.'+Laravel.user.id)
 				.listen('ConversationCreated', (e) => {
 					commit('prependToConversations', e.data)
-				});
+				})
+				.listen('ConverstationReplyCreated', e => {
+					commit('prependToConversations', e.data.parent.data)
+				})
 		});
 	}
 }
