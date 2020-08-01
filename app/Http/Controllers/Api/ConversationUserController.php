@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Transformers\ConversationTransformer;
 use App\Http\Requests\StoreConversationUserRequest;
+use App\Events\ConversationAddedUsers;
 use App\Conversation;
 
 class ConversationUserController extends Controller
@@ -17,6 +18,8 @@ class ConversationUserController extends Controller
         $conversation->users()->syncWithoutDetaching($request->recipients);
 
         $conversation->load(['users']);
+
+        broadcast(new ConversationAddedUsers($conversation))->toOthers();
 
         return fractal()
             ->item($conversation)
